@@ -123,3 +123,46 @@ FromB:
 	beq $a3, $t3, PrintBA	
 	beq $a3, $t5, PrintBC	
 
+PrintBA:
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)		
+	li  $v0, 4 
+	la  $a0, MoveBA
+	syscall
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	j hanoi2
+PrintBC:
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)		
+	li  $v0, 4 
+	la  $a0, MoveBC
+	syscall
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	j hanoi2
+FromC:
+	beq $a3, $t3, PrintCA	
+	beq $a3, $t4, PrintCB	
+	
+PrintCA:
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)		
+	li  $v0, 4
+	la  $a0, MoveCA
+	syscall
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	j hanoi2
+
+PrintCB:
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)		
+	li  $v0, 4 
+	la  $a0, MoveCB
+	syscall
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	j hanoi2
+End:
+	jr $ra
