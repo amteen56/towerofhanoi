@@ -1,20 +1,15 @@
 .data
 Prompt:.asciiz "\nPlease enter the number of disks: "
-Author:.asciiz "Author: Aaron Foltz\n"
-MoveAB:.asciiz "Move disk from A to B\n"
-MoveAC::.asciiz "Move disk from A to C\n"
-MoveBC:.asciiz "Move disk from B to C\n"
-MoveBA:.asciiz "Move from disk B to A\n"
-MoveCB:.asciiz "Move from disk C to B\n"
-MoveCA::.asciiz "Move from disk C to A\n"
-Exit:.asciiz "The disks have all been moved"
+MovAB:.asciiz "Move disk from A to B\n"
+MovAC::.asciiz "Move disk from A to C\n"
+MovBC:.asciiz "Move disk from B to C\n"
+MovBA:.asciiz "Move from disk B to A\n"
+MovCB:.asciiz "Move from disk C to B\n"
+MovCA::.asciiz "Move from disk C to A\n"
+Exit:.asciiz "Task Completed"
 
     .text
-main:
-    li $v0, 4 
-    la $a0, Author
-    syscall
-    
+main:  
 start:
     
     li  $v0, 4
@@ -38,13 +33,13 @@ start:
     addi $t3, $zero, 1	
     addi $t4, $zero, 2	
     addi $t5, $zero, 3	
-    jal hanoi		
+    jal hanoi1		
     li 	$v0, 4;      
     la 	$a0, Exit;    			
     syscall;
 	
 	.data
-hanoi:
+hanoi1:
 	
 	slti $t1, $a0, 1
 	beq $t1, $t3, End	
@@ -90,79 +85,80 @@ hanoi2:
 	move $a2, $t6		
 
 	addi $a0, $a0, -1	
-	jal hanoi		
+	jal hanoi1		
 	
 	lw $ra, 0($sp)		
 	addi $sp, $sp, 20
 	jr $ra
 	
 FromA:
-	beq $a3, $t4, PrintAB	
-	beq $a3, $t5, PrintAC	
+	beq $a3, $t4, PAB	
+	beq $a3, $t5, PAC	
 	
-PrintAB:
+PAB:
 	addi $sp, $sp, -4
 	sw $a0, 0($sp)		
 	li  $v0, 4 
-	la  $a0, MoveAB
+	la  $a0, MovAB
 	syscall
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	j hanoi2
 
-PrintAC:
+PAC:
 	addi $sp, $sp, -4
 	sw $a0, 0($sp)		
 	li  $v0, 4 
-	la  $a0, MoveAC
+	la  $a0, MovAC
 	syscall
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	j hanoi2
 FromB:
-	beq $a3, $t3, PrintBA	
-	beq $a3, $t5, PrintBC	
+	beq $a3, $t3, PBA	
+	beq $a3, $t5, PBC	
 
-PrintBA:
+PBA:
 	addi $sp, $sp, -4
 	sw $a0, 0($sp)		
 	li  $v0, 4 
-	la  $a0, MoveBA
+	la  $a0, MovBA
 	syscall
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	j hanoi2
-PrintBC:
+PBC:
 	addi $sp, $sp, -4
 	sw $a0, 0($sp)		
 	li  $v0, 4 
-	la  $a0, MoveBC
+	la  $a0, MovBC
 	syscall
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	j hanoi2
 FromC:
-	beq $a3, $t3, PrintCA	
-	beq $a3, $t4, PrintCB	
+	beq $a3, $t3, PCA	
+	beq $a3, $t4, PCB	
 	
-PrintCA:
+PCA:
 	addi $sp, $sp, -4
 	sw $a0, 0($sp)		
 	li  $v0, 4
-	la  $a0, MoveCA
+	la  $a0, MovCA
 	syscall
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	j hanoi2
 
-PrintCB:
+PCB:
 	addi $sp, $sp, -4
 	sw $a0, 0($sp)		
 	li  $v0, 4 
-	la  $a0, MoveCB
+	la  $a0, MovCB
 	syscall
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	j hanoi2
+	
 End:
 	jr $ra
